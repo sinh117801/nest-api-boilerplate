@@ -6,11 +6,14 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt/auth.guard';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { MessagesService } from './messages.service';
 
+@UseGuards(JwtAuthGuard)
 @Controller()
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
