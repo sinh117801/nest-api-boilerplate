@@ -7,7 +7,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  private async checkNotExistedUser(id: number) {
+  async #checkNotExistedUser(id: number) {
     const existedUser = await this.prismaService.user.findUnique({
       where: { id },
       select: { id: true },
@@ -46,13 +46,13 @@ export class UsersService {
   }
 
   async findOne(id: number) {
-    const user = await this.checkNotExistedUser(id);
+    const user = await this.#checkNotExistedUser(id);
 
     return user;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    await this.checkNotExistedUser(id);
+    await this.#checkNotExistedUser(id);
 
     const updatedUser = await this.prismaService.user.update({
       where: { id },
@@ -63,7 +63,7 @@ export class UsersService {
   }
 
   async remove(id: number) {
-    const user = await this.checkNotExistedUser(id);
+    const user = await this.#checkNotExistedUser(id);
 
     await this.prismaService.user.delete({ where: { id } });
 
